@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.mapper.BookMapper">
+    <resultMap id="bookMap" type="book">
+        <result column="id" property="id" />
+        <result column="title" property="title" />
+        <result column="author" property="author" />
+        <result column="isbn" property="isbn" />
+        <result column="publication_year" property="publicationYear" />
+        <result column="publisher" property="publisher" />
+        <result column="price" property="price" />
+    </resultMap>
+
+    <update id="updateBook" parameterType="com.example.model.Book">
+        update book
+        <set>
+            <if test="title != null">title = #{title}</if>
+            <if test="author != null">, author = #{author}</if>
+            <if test="isbn != null">, isbn = #{isbn}</if>
+            <if test="publicationYear != null">, publication_year = #{publicationYear}</if>
+            <if test="publisher != null">, publisher = #{publisher}</if>
+            <if test="price != null">, price = #{price}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="selectBy" resultMap="bookMap" >
+        select * from book
+        <where>
+            <if test="title != null and title != ''">title like concat('%',#{title},'%')</if>
+            <if test="author != null and author != ''">and author like concat('%',#{author},'%')</if>
+        </where>
+    </select>
+
+</mapper>
